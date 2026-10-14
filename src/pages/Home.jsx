@@ -14,18 +14,8 @@ import step3Icon from "../assets/step3.png";
 import step4Icon from "../assets/step4.png";
 
 // Developer photos
-import devJb from "../assets/jb.jpg";
-import devJosh from "../assets/josh.jpg";
+import devMarc from "../assets/marc.jpg";
 import devRochelle from "../assets/rochelle.jpg";
-import devJizel from "../assets/jizel.jpg";
-
-// Fallback pet photos
-import prio1 from "../assets/farquad.jpg";
-import prio2 from "../assets/blacky.jpg";
-import prio3 from "../assets/beverly.webp";
-import norm1 from "../assets/abdul.jpg";
-import norm2 from "../assets/lee.jpg";
-import norm3 from "../assets/ismail.jpg";
 
 // Modals
 import PetModal from "../components/PetModal";
@@ -87,36 +77,41 @@ export default function Home() {
   async function loadAnimals() {
     setLoading(true);
     try {
+      console.log("Fetching animals from API...");
       const data = await getAnimals();
+      console.log("API response:", data);
       if (Array.isArray(data) && data.length > 0) {
+        console.log("Setting animals from API:", data);
         setAnimals(data);
       } else {
+        console.log("API returned empty or invalid data, using demo data");
         setAnimals(getDemoAnimals());
       }
     } catch (err) {
-      console.warn("Could not load from API, using demo data fallback", err);
+      console.error("Could not load from API, using demo data fallback", err);
       setAnimals(getDemoAnimals());
     } finally {
+      console.log("Loading complete, setting loading to false");
       setLoading(false);
     }
   }
 
   function getDemoAnimals() {
     return [
-      { id: 1, name: "Farquad", breed: "Shih Tzu Mix", weight: 5.2, age: 2, gender: "Male", category: "priority", description: "Rescued from an abandoned building in Manila. Gentle-natured, loves treats, and gets along well with other small dogs.", personality: "Affectionate, quiet, couch-potato, easygoing with humans.", image: prio1 },
-      { id: 2, name: "Blacky", breed: "Aspin (Native)", weight: 14.5, age: 3, gender: "Male", category: "priority", description: "High-energy rescue found wandering near Quezon City circle. Fully vaccinated and eager to find an active family.", personality: "Loyal, energetic, great watch-companion, highly trainable.", image: prio2 },
-      { id: 3, name: "Beverly", breed: "Domestic Shorthair", weight: 3.8, age: 1, gender: "Female", category: "priority", description: "Playful kitten rescued from a drainage pipe. She loves feather wands, warm laps, and window watching.", personality: "Curious, purrs constantly, friendly with children.", image: prio3 },
-      { id: 4, name: "Abdul", breed: "Labrador Mix", weight: 21.0, age: 4, gender: "Male", category: "normal", description: "Rescued as a stray pup, now a gentle giant who walks smoothly on a leash and loves belly rubs.", personality: "Calm, patient, friendly with dogs and kids alike.", image: norm1 },
-      { id: 5, name: "Lee", breed: "Tabby Cat", weight: 4.2, age: 2, gender: "Male", category: "normal", description: "Calm feline rescued near our Katipunan shelter. Fully neutered and litter-trained.", personality: "Independent, serene, loves sunbathing and chin scratches.", image: norm2 },
-      { id: 6, name: "Ismail", breed: "Calico Cat", weight: 3.5, age: 2, gender: "Female", category: "normal", description: "Sweet and social calico looking for a calm home. Gets along well with other friendly pets.", personality: "Gentle, vocal when dinner is served, cuddly.", image: norm3 },
+      { id: 1, name: "Farquad", breed: "Shih Tzu Mix", weight: 5.2, age: 2, gender: "Male", category: "priority", description: "Rescued from an abandoned building in Manila. Gentle-natured, loves treats, and gets along well with other small dogs.", personality: "Affectionate, quiet, couch-potato, easygoing with humans.", image: null },
+      { id: 2, name: "Blacky", breed: "Aspin (Native)", weight: 14.5, age: 3, gender: "Male", category: "priority", description: "High-energy rescue found wandering near Quezon City circle. Fully vaccinated and eager to find an active family.", personality: "Loyal, energetic, great watch-companion, highly trainable.", image: null },
+      { id: 3, name: "Beverly", breed: "Domestic Shorthair", weight: 3.8, age: 1, gender: "Female", category: "priority", description: "Playful kitten rescued from a drainage pipe. She loves feather wands, warm laps, and window watching.", personality: "Curious, purrs constantly, friendly with children.", image: null },
+      { id: 4, name: "Abdul", breed: "Labrador Mix", weight: 21.0, age: 4, gender: "Male", category: "normal", description: "Rescued as a stray pup, now a gentle giant who walks smoothly on a leash and loves belly rubs.", personality: "Calm, patient, friendly with dogs and kids alike.", image: null },
+      { id: 5, name: "Lee", breed: "Tabby Cat", weight: 4.2, age: 2, gender: "Male", category: "normal", description: "Calm feline rescued near our Katipunan shelter. Fully neutered and litter-trained.", personality: "Independent, serene, loves sunbathing and chin scratches.", image: null },
+      { id: 6, name: "Ismail", breed: "Calico Cat", weight: 3.5, age: 2, gender: "Female", category: "normal", description: "Sweet and social calico looking for a calm home. Gets along well with other friendly pets.", personality: "Gentle, vocal when dinner is served, cuddly.", image: null },
     ];
   }
 
   const imageFor = (animal) => {
-    if (!animal) return norm1;
+    if (!animal) return shelterImg;
     if (animal.image_url) return animal.image_url;
     if (animal.image) return animal.image;
-    return norm1;
+    return shelterImg;
   };
 
   const filteredAnimals = animals.filter((animal) => {
@@ -362,10 +357,8 @@ export default function Home() {
             </p>
             <div className="devs-grid">
               {[
-                { name: "Jay Bhie Bite", img: devJb },
-                { name: "Josh Kenneth Carpio", img: devJosh },
-                { name: "Rochelle Ann Salucop", img: devRochelle },
-                { name: "Jizel Vergara", img: devJizel },
+                { name: "Marc Lorenz Santiago", img: devMarc },
+                { name: "Rochelle Ann Salucop", img: devRochelle }
               ].map((dev, i) => (
                 <div key={dev.name} className="dev-card" style={{ animationDelay: `${i * 0.08}s` }}>
                   <img src={dev.img} alt={dev.name} />
